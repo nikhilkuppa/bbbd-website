@@ -23,9 +23,6 @@ app.config.from_object(ConfigVariables)
 bucket_name = app.config['S3_BUCKET']
 prefix_s3 = app.config['S3_PREFIX']
 
-# Global dictionary to track progress
-progress = {}
-
 @app.route('/git_update', methods=['POST'])
 def git_update():
     repo = git.Repo('./orbe')
