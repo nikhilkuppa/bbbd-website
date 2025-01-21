@@ -10,6 +10,8 @@ import boto3
 from botocore import UNSIGNED
 from botocore.client import Config
 import zipfile
+import git
+
 # from threading import Thread
 from config import ConfigVariables
 from datasets_info import datasets
@@ -23,6 +25,15 @@ prefix_s3 = app.config['S3_PREFIX']
 
 # Global dictionary to track progress
 progress = {}
+
+@app.route('/git_update', methods=['POST'])
+def git_update():
+    repo = git.Repo('./orbe')
+    origin = repo.remotes.origin
+    repo.create_head('main',
+                     origin.refs.main).set_tracking_branch(origin.refs.main).checkout()
+    origin.pull()
+    return '', 200
 
 @app.route('/')
 def index():
